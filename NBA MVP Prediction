@@ -54,13 +54,25 @@ tposi = dffmm.groupby("Position")["Year"].count().nlargest(3).reset_index()
 print("1. Total MVP By Position","\n", tposi,"\n")
 
 print("2. MVP by position each decade")
+import matplotlib.pyplot as plt
+guard = []
+forward = []
+center = []
+
 for year in years:
-    dffmy = dffm[(dffm["Year"] >= year) & (dffm["Year"] < year+10)]
+    dffmy = dffm[(dffm["Year"] >= year-10) & (dffm["Year"] < year)]
     posi = dffmy.groupby("Position")["Year"].count().nlargest(3).reset_index()
     
-    
-    print(year,"-", year+9)
-    print(posi, "\n")
+    pguard = dffmy[(dffmy["Position"]=="Guard")]
+    pforward = dffmy[(dffmy["Position"]=="Forward")]
+    pcenter = dffmy[(dffmy["Position"]=="Center")]
+    guard.append(len(pguard))
+    forward.append(len(pforward))
+    center.append(len(pcenter))
+
+d = pd.DataFrame({"Center": center, "Forward": forward, "Guard": guard}, index = years)
+a = d.plot.bar(rot=0)
+plt.show()
 
 print("\n")
 print("Trend Analysis")
