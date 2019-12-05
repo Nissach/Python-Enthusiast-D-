@@ -22,7 +22,7 @@ df20["Year"] = 2020
 df20.columns = ["Name", "Team", "Position", "Game Played", "Minutes", "2P%", "3P%", "TS", "Point", "Rebound", "Assist", "Steal", "Block","Turnover", "Year"]
 
 #How many teams with MVP won/not won conference championship and NBA championship
-print("How many teams with MVP won/not won conference championship and NBA championship")
+print("Teams with MVP and their championship")
 print("================================================================================")
 dffm["Team"] = dffm["Team"].fillna("None")
 dffmm = dffm[dffm["Team"] != "None"] #cleaning up the file
@@ -30,8 +30,8 @@ dffmm = dffm[dffm["Team"] != "None"] #cleaning up the file
 cchamp = len(dffmm[(dffmm["Status"] == "Champion") | (dffmm["Status"] == "Vice-Champion")])
 fchamp = len(dffmm[(dffmm["Status"] == "Champion")])
 
-print("Out of ", len(dffmm), "MVPs, ", cchamp, "MVP was at least won their conference.")
-print("Out of ", len(dffmm), "MVPs, ", fchamp, "MVP was won NBA Championship.")
+print("Out of ", len(dffmm), "MVPs, ", cchamp, "MVP was at least won their conference.","(", cchamp/len(dffmm)*100, "% )")
+print("Out of ", len(dffmm), "MVPs, ", fchamp, "MVP was won NBA Championship.","(", fchamp/len(dffmm)*100, "% )")
 
 #Team with most MVP vs team with most championship
 print("\n")
@@ -39,8 +39,9 @@ print("Team with most MVP and most championship")
 print("===============================================")
 mvps = dffmm.groupby("Team")["Year"].count().nlargest(3).reset_index()
 teams = dffmm.groupby("NBA Champ")["Year"].count().nlargest(3).reset_index()
-print(" Top 3 teams with most number of MVPs", "\n", mvps)
-print("\n","Top 3 teams with most number of NBA Championship", "\n",teams)
+print("1. Top 3 teams with most number of MVPs", "\n", mvps)
+print("\n")
+print("2. Top 3 teams with most number of NBA Championship", "\n",teams)
 
 #MVP by position GROUP BY era (1970s, 1980s etc) 
 print("\n")
@@ -50,9 +51,9 @@ y = dffmm.groupby(["Year"]).count().reset_index()["Year"].tolist()
 years = [y[0],y[10], y[20], y[30], y[40], y[50], y[60]]
 
 tposi = dffmm.groupby("Position")["Year"].count().nlargest(3).reset_index()
-print("Total MVP By Position","\n", tposi,"\n")
+print("1. Total MVP By Position","\n", tposi,"\n")
 
-print("MVP by position each decade")
+print("2. MVP by position each decade")
 for year in years:
     dffmy = dffm[(dffm["Year"] >= year) & (dffm["Year"] < year+10)]
     posi = dffmy.groupby("Position")["Year"].count().nlargest(3).reset_index()
@@ -62,7 +63,7 @@ for year in years:
     print(posi, "\n")
 
 print("\n")
-print("Trend")
+print("Trend Analysis")
 print("=======================")
 
 ddhist = dfhist[dfhist["Year"] >= 1980]
@@ -81,14 +82,15 @@ for year in years:
     twopa = ddhist.loc[ddhist["Year"] == year, "2PA"].sum()
     twopdata.append(twopa/totalfa)
 
-print("3 Point Attempt Trend")
+print("1. Three Points Attempt Trend")
 import matplotlib.pyplot as plt
 plt.plot(years,threepdata)
 plt.show()
 
 print("=================================================")
 
-print("\n", "2 Point Attempt Trend")
+print("\n")
+print("2. Two Points Attempt Trend")
 import matplotlib.pyplot as plt
 plt.plot(years,twopdata)
 plt.show()
@@ -98,10 +100,9 @@ print("=================================================")
 ddhist = dfhist[dfhist["Year"] >= 2010]
 years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
 
-
-ddfhist = ddhist[(ddhist["Year"] >= 2010)]
-winsharelist = ddfhist.nlargest(50, "Winshare/48")
-print("\n", "<Stat = Winshare/48 : Top 50 players' position from 2010>")
+winsharelist = ddhist.nlargest(50, "Winshare/48")
+print("\n")
+print("3. <Stat = Winshare/48 : Top 50 players' position from 2010>")
 print(winsharelist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
 
 import matplotlib.pyplot as plt
@@ -110,11 +111,28 @@ plt.show()
 print("=================================================")
 print("\n")
   
-bpmlist = ddfhist.nlargest(50, "BPM")
-print("\n", "<Stat = BPM : Top 50 players' position from 2010>")
-print(bpmlist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
+print("\n")
+print("4. <Stat = Winshare/48 : Top 10 players' position each year from 2010>")
+for year in years:
+    ddfhist = ddhist[(ddhist["Year"] == year)]
+    wslist = ddfhist.nlargest(10, "Winshare/48")
+    print(int(year),"\n", wslist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
+print("=================================================")
+
+vorplistt = ddhist.nlargest(50, "VORP")
+print("\n")
+print("5. <Stat = VORP : Top 50 players' position from 2010>")
+print(vorplistt.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
 
 import matplotlib.pyplot as plt
-bpmlist.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stacked=True)
+vorplistt.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stacked=True)
 plt.show()
 print("=================================================")
+
+print("\n")
+print("6. <Stat = VORP : Top 10 players' position each year from 2010>")
+for year in years:
+    ddffhist = ddhist[(ddhist["Year"] == year)]
+    vorplist = ddffhist.nlargest(10, "VORP")
+    print(int(year),"\n", vorplist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
+
