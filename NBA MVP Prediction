@@ -4,49 +4,52 @@ dffm = pd.read_csv("NBA Finals and MVP.csv", encoding = 'unicode_escape')
 dffm = dffm[["Year", "Western Champion", "Eastern Champion", "NBA Champion", "NBA Vice-Champion","MVP Name","MVP Position", "MVP Team", "MVP Nationality", "MVP status"]]
 dffm.columns = ["Year", "West Champ", "East Champ", "NBA Champ", "Runnerup", "MVP", "Position", "Team", "National", "Status"]
 
+
 dfhist = pd.read_csv("Seasons_Stats.csv")
-dfhist = dfhist[["Year", "Player", "Pos", "Tm", "G", "MP", "PER", "TS%", "OWS", "DWS", "WS", "WS/48", "BPM", "VORP", "FG%", "3P","3PA","3P%", "2P", "2PA", "2P%", "TRB", "AST", "STL", "BLK", "TOV", "PTS" ]]
-dfhist.columns = ["Year", "Name", "Position", "Team", "Game Played", "Minutes", "PER", "True Shooting", "OWinshare", "DWinshare", "Winshare", "Winshare/48", "BPM", "VORP", "FG%","3P","3PA","3P%", "2P", "2PA", "2P%", "Rebound", "Assist", "Steal", "Block", "Turnover", "Point" ]
+dfhist = dfhist[["Year", "Player", "Pos", "Tm", "G", "MP", "PER", "TS%", "OWS", "DWS", "WS", "WS/48", "BPM", "VORP", "FGA", "FG%", "3P","3PA","3P%", "2P", "2PA", "2P%", "TRB", "AST", "STL", "BLK", "TOV", "PTS" ]]
+dfhist.columns = ["Year", "Name", "Position", "Team", "Game Played", "Minutes", "PER", "True Shooting", "OWinshare", "DWinshare", "Winshare", "Winshare/48", "BPM", "VORP", "FGA", "FG%","3P","3PA","3P%", "2P", "2PA", "2P%", "Rebound", "Assist", "Steal", "Block", "Turnover", "Point" ]
+
 
 df19 = pd.read_csv("2018-2019 NBA Player Stats  NBAstuffer.csv", header = 1, encoding = 'unicode_escape')
-df19 = df19[["FULL NAME", "TEAM", "POS", "GP", "MPG", "2P%", "3P%", "TS%True Shooting PercentageTrue shooting percentage is a measure of shooting efficiency that takes into account field goals, 3-point field goals, and free throws.", "PPGPointsPoints per game.","RPGReboundsRebounds per game.", "APGAssistsAssists per game.", "SPGStealsSteals per game.", "BPGBlocksBlocks per game."]]
+df19 = df19[["FULL NAME", "TEAM", "POS", "GP", "MPG", "2P%", "3P%", "TS%True Shooting PercentageTrue shooting percentage is a measure of shooting efficiency that takes into account field goals, 3-point field goals, and free throws.", "PPGPointsPoints per game.","RPGReboundsRebounds per game.", "APGAssistsAssists per game.", "SPGStealsSteals per game.", "BPGBlocksBlocks per game.","TOPGTurnoversTurnovers per game."]]
 df19["Year"] = 2019
-df19.columns = ["Name", "Team", "Position", "Game Played", "Minutes", "2P%", "3P%", "TS", "Point", "Rebound", "Assist", "Steal", "Block", "Year"]
+df19.columns = ["Name", "Team", "Position", "Game Played", "Minutes", "2P%", "3P%", "TS", "Point", "Rebound", "Assist", "Steal", "Block","Turnover", "Year"]
+
 
 df20 = pd.read_csv("2019-2020 NBA Player Stats  NBAstuffer.csv", header = 1, encoding = 'unicode_escape')
-df20 = df20[["FULL NAME", "TEAM", "POS", "GP", "MPG", "2P%", "3P%", "TS%True Shooting PercentageTrue shooting percentage is a measure of shooting efficiency that takes into account field goals, 3-point field goals, and free throws.", "PPGPointsPoints per game.","RPGReboundsRebounds per game.", "APGAssistsAssists per game.", "SPGStealsSteals per game.", "BPGBlocksBlocks per game."]]
+df20 = df20[["FULL NAME", "TEAM", "POS", "GP", "MPG", "2P%", "3P%", "TS%True Shooting PercentageTrue shooting percentage is a measure of shooting efficiency that takes into account field goals, 3-point field goals, and free throws.", "PPGPointsPoints per game.","RPGReboundsRebounds per game.", "APGAssistsAssists per game.", "SPGStealsSteals per game.", "BPGBlocksBlocks per game.","TOPGTurnoversTurnovers per game."]]
 df20["Year"] = 2020
-df20.columns = ["Name", "Team", "Position", "Game Played", "Minutes", "2P%", "3P%", "TS", "Point", "Rebound", "Assist", "Steal", "Block", "Year"]
+df20.columns = ["Name", "Team", "Position", "Game Played", "Minutes", "2P%", "3P%", "TS", "Point", "Rebound", "Assist", "Steal", "Block","Turnover", "Year"]
 
 #How many teams with MVP won/not won conference championship and NBA championship
-print("Step 1: How many teams with MVP won/not won conference championship and NBA championship")
-print("===================")
+print("How many teams with MVP won/not won conference championship and NBA championship")
+print("=======================")
 dffm["Team"] = dffm["Team"].fillna("None")
-dffm = dffm[dffm["Team"] != "None"]
+dffmm = dffm[dffm["Team"] != "None"]
 
-cchamp = len(dffm[(dffm["Status"] == "Champion") | (dffm["Status"] == "Vice-Champion")])
-fchamp = len(dffm[(dffm["Status"] == "Champion")])
+cchamp = len(dffmm[(dffmm["Status"] == "Champion") | (dffmm["Status"] == "Vice-Champion")])
+fchamp = len(dffmm[(dffmm["Status"] == "Champion")])
 
-print("Out of ", len(dffm), "MVPs, ", cchamp, "MVP was at least won their conference.")
-print("Out of ", len(dffm), "MVPs, ", fchamp, "MVP was won NBA Championship.")
+print("Out of ", len(dffmm), "MVPs, ", cchamp, "MVP was at least won their conference.")
+print("Out of ", len(dffmm), "MVPs, ", fchamp, "MVP was won NBA Championship.")
 
 #Team with most MVP vs team with most championship
 print("\n")
-print("Step 2: Team with most MVP and most championship")
-print("====================")
+print("Team with most MVP and most championship")
+print("=======================")
 mvps = dffmm.groupby("Team")["Year"].count().nlargest(3).reset_index()
 teams = dffm.groupby("NBA Champ")["Year"].count().nlargest(3).reset_index()
-print("Top 3 teams with most number of MVPs", "\n", mvps)
-print("\n", "Top 3 teams with most number of NBA Championship", "\n",teams)
+print(" Top 3 teams with most number of MVPs", "\n", mvps)
+print("\n","Top 3 teams with most number of NBA Championship", "\n",teams)
 
 #MVP by position GROUP BY era (1970s, 1980s etc) 
 print("\n")
-print("Step 3: MVP by position GROUP BY era (1970s, 1980s etc")
+print("MVP by position GROUP BY era (1970s, 1980s etc)")
 print("=======================")
 y = dffm.groupby(["Year"]).count().reset_index()["Year"].tolist()
 years = [y[0],y[10], y[20], y[30], y[40], y[50], y[60]]
 
-tposi = dffm.groupby("Position")["Year"].count().nlargest(3).reset_index()
+tposi = dffmm.groupby("Position")["Year"].count().nlargest(3).reset_index()
 print("Total MVP By Position","\n", tposi,"\n")
 
 print("MVP by position each decade")
@@ -54,5 +57,59 @@ for year in years:
     dffmy = dffm[(dffm["Year"] >= year) & (dffm["Year"] < year+10)]
     posi = dffmy.groupby("Position")["Year"].count().nlargest(3).reset_index()
     
+    
     print(year,"-", year+9)
     print(posi, "\n")
+
+print("\n")
+print("Trend")
+print("=======================")
+
+ddhist = dfhist[dfhist["Year"] >= 1980]
+
+years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
+threepdata = []
+twopdata = []
+
+for year in years:
+    
+    totalfa = ddhist.loc[ddhist["Year"] == year, "FGA"].sum()
+    
+    threepa = ddhist.loc[ddhist["Year"] == year, "3PA"].sum()
+    threepdata.append(threepa/totalfa)
+    
+    twopa = ddhist.loc[ddhist["Year"] == year, "2PA"].sum()
+    twopdata.append(twopa/totalfa)
+
+print("3 Point Attempt Trend")
+import matplotlib.pyplot as plt
+plt.plot(years,threepdata)
+plt.show()
+
+print("\n", "2 Point Attempt Trend")
+import matplotlib.pyplot as plt
+plt.plot(years,twopdata)
+plt.show()
+
+# Advanced stats by position
+ddhist = dfhist[dfhist["Year"] >= 2010]
+years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
+
+
+ddfhist = ddhist[(ddhist["Year"] >= 2010)]
+winsharelist = ddfhist.nlargest(50, "Winshare/48")
+print("\n", "<Stat = Winshare/48 : Top 50 players' position from 2010>")
+print(winsharelist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
+
+import matplotlib.pyplot as plt
+winsharelist.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stacked=True)
+plt.show()
+print("\n")
+  
+bpmlist = ddfhist.nlargest(50, "BPM")
+print("\n", "<Stat = BPM : Top 50 players' position from 2010>")
+print(bpmlist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
+
+import matplotlib.pyplot as plt
+bpmlist.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stacked=True)
+plt.show()
