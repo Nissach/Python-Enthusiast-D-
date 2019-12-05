@@ -1,0 +1,61 @@
+import pandas as pd  # To read data
+import matplotlib.pyplot as plt  # To visualize
+from sklearn.linear_model import LinearRegression
+
+
+df =  pd.read_csv('NBA_data1.csv')
+
+# Points difference
+PTSdiff = df['PTS'] - df['oppPTS']
+Win = df['W']
+
+# Check for linear relationship between Win and Points Difference
+plt.scatter(PTSdiff, Win, color='blue')
+
+# Add Point Difference to the data frame
+df['PTSdiff'] = PTSdiff  
+
+X = df.iloc[:, 20].values.reshape(-1, 1)  # values converts it into an array
+Y = df.iloc[:, 3].values.reshape(-1, 1)  # -1 means that calculate the dimension of rows, but have 1 column
+
+# Linear regression model for wins
+linear_regressor = LinearRegression()  # create object for the class
+linear_regressor.fit(X, Y)  # perform linear regression
+Y_pred = linear_regressor.predict(X)  # make predictions
+
+plt.scatter(X, Y, color='black')
+plt.plot(X, Y_pred, color='red')
+plt.show()
+
+N = input("Press Enter To Continue")
+
+playoffdf = df[df.Playoffs == 1] # find how many wins you need to go to Playoffs
+playoffdf = playoffdf.groupby("W")["Playoffs"].count()
+print(playoffdf)
+
+playoffdf = df[df.Playoffs == 0] # find how many wins you need to go to Playoffs
+playoffdf = playoffdf.groupby("W")["Playoffs"].count()
+print(playoffdf)
+
+Y = input("Press Enter To Continue")
+
+df = df[["SeasonEnd", "Team", "Playoffs","W","PTS", "oppPTS", "FG", "2P" ,"3P", "2PA","3PA","FT","FTA","ORB","DRB","AST", "STL", "BLK", "TOV"]]
+df.columns = ["SeasonEnd", "Team", "Playoffs", "W","PTS","oppPTS","FG","X2P","X3P","X2PA","X3PA","FT","FTA","ORB","DRB","AST","STL","BLK","TOV"]
+
+
+import statsmodels.formula.api as smf
+
+print("")
+print("Model 1 ++++++++++==============")
+model = smf.ols(formula='Win ~ PTSdiff', data=df)
+res = model.fit()
+print(res.summary())
+print("")
+PD = (42-41)/0.0326
+print(PD)
+print("")
+
+print("Model 2 +++++++++++===========")
+model3 = smf.ols(formula='PTS ~ X2PA + X3PA + FTA + ORB + AST  +STL', data=df)
+res3 = model3.fit()
+print(res3.summary())
