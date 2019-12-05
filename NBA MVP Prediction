@@ -110,8 +110,7 @@ winsharelist.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stac
 plt.show()
 print("=================================================")
 print("\n")
-  
-print("\n")
+
 print("4. <Stat = Winshare/48 : Top 10 players' position each year from 2010>")
 big = []
 small = []
