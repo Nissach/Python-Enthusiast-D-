@@ -113,10 +113,20 @@ print("\n")
   
 print("\n")
 print("4. <Stat = Winshare/48 : Top 10 players' position each year from 2010>")
+big = []
+small = []
+
 for year in years:
     ddfhist = ddhist[(ddhist["Year"] == year)]
     wslist = ddfhist.nlargest(10, "Winshare/48")
-    print(int(year),"\n", wslist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
+    wsbig = wslist[(wslist["Position"]=="C") | (wslist["Position"]=="PF")]
+    wssmall = wslist[(wslist["Position"]!="C") & (wslist["Position"]!="PF")]
+    big.append(len(wsbig))
+    small.append(len(wssmall))
+
+dff = pd.DataFrame({"C & PF": big, "PG & SG & SF": small}, index = years)
+axx = dff.plot.bar(rot=0)
+plt.show()
 print("=================================================")
 
 vorplistt = ddhist.nlargest(50, "VORP")
@@ -131,8 +141,16 @@ print("=================================================")
 
 print("\n")
 print("6. <Stat = VORP : Top 10 players' position each year from 2010>")
+bigman = []
+smallman = []
 for year in years:
     ddffhist = ddhist[(ddhist["Year"] == year)]
     vorplist = ddffhist.nlargest(10, "VORP")
-    print(int(year),"\n", vorplist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
+    vorpbig = vorplist[(vorplist["Position"]=="C") | (vorplist["Position"]=="PF")]
+    vorpsmall = vorplist[(vorplist["Position"]!="C") & (vorplist["Position"]!="PF")]
+    bigman.append(len(vorpbig))
+    smallman.append(len(vorpsmall))
 
+df = pd.DataFrame({"C & PF": bigman, "PG & SG & SF": smallman}, index = years)
+ax = df.plot.bar(rot=0)
+plt.show()
