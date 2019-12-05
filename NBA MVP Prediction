@@ -23,9 +23,9 @@ df20.columns = ["Name", "Team", "Position", "Game Played", "Minutes", "2P%", "3P
 
 #How many teams with MVP won/not won conference championship and NBA championship
 print("How many teams with MVP won/not won conference championship and NBA championship")
-print("=======================")
+print("================================================================================")
 dffm["Team"] = dffm["Team"].fillna("None")
-dffmm = dffm[dffm["Team"] != "None"]
+dffmm = dffm[dffm["Team"] != "None"] #cleaning up the file
 
 cchamp = len(dffmm[(dffmm["Status"] == "Champion") | (dffmm["Status"] == "Vice-Champion")])
 fchamp = len(dffmm[(dffmm["Status"] == "Champion")])
@@ -36,17 +36,17 @@ print("Out of ", len(dffmm), "MVPs, ", fchamp, "MVP was won NBA Championship.")
 #Team with most MVP vs team with most championship
 print("\n")
 print("Team with most MVP and most championship")
-print("=======================")
+print("===============================================")
 mvps = dffmm.groupby("Team")["Year"].count().nlargest(3).reset_index()
-teams = dffm.groupby("NBA Champ")["Year"].count().nlargest(3).reset_index()
+teams = dffmm.groupby("NBA Champ")["Year"].count().nlargest(3).reset_index()
 print(" Top 3 teams with most number of MVPs", "\n", mvps)
 print("\n","Top 3 teams with most number of NBA Championship", "\n",teams)
 
 #MVP by position GROUP BY era (1970s, 1980s etc) 
 print("\n")
 print("MVP by position GROUP BY era (1970s, 1980s etc)")
-print("=======================")
-y = dffm.groupby(["Year"]).count().reset_index()["Year"].tolist()
+print("=================================================")
+y = dffmm.groupby(["Year"]).count().reset_index()["Year"].tolist()
 years = [y[0],y[10], y[20], y[30], y[40], y[50], y[60]]
 
 tposi = dffmm.groupby("Position")["Year"].count().nlargest(3).reset_index()
@@ -86,11 +86,14 @@ import matplotlib.pyplot as plt
 plt.plot(years,threepdata)
 plt.show()
 
+print("=================================================")
+
 print("\n", "2 Point Attempt Trend")
 import matplotlib.pyplot as plt
 plt.plot(years,twopdata)
 plt.show()
 
+print("=================================================")
 # Advanced stats by position
 ddhist = dfhist[dfhist["Year"] >= 2010]
 years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
@@ -104,6 +107,7 @@ print(winsharelist.groupby("Position")["Year"].count().sort_values(ascending = F
 import matplotlib.pyplot as plt
 winsharelist.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stacked=True)
 plt.show()
+print("=================================================")
 print("\n")
   
 bpmlist = ddfhist.nlargest(50, "BPM")
@@ -113,3 +117,4 @@ print(bpmlist.groupby("Position")["Year"].count().sort_values(ascending = False)
 import matplotlib.pyplot as plt
 bpmlist.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stacked=True)
 plt.show()
+print("=================================================")
