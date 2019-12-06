@@ -20,6 +20,7 @@ fchamp = len(dffmm[(dffmm["Status"] == "Champion")]) #win final championship
 
 print("Out of ", len(dffmm), "MVPs, ", cchamp, "MVP was at least won their conference.","(", cchamp/len(dffmm)*100, "% )")
 print("Out of ", len(dffmm), "MVPs, ", fchamp, "MVP was won NBA Championship.","(", fchamp/len(dffmm)*100, "% )")
+aa = input("Press Enter To Continue")
 
 #Team with most MVP vs team with most championship
 print("\n")
@@ -30,6 +31,7 @@ teams = dffmm.groupby("NBA Champ")["Year"].count().nlargest(3).reset_index() #to
 print("1. Top 3 teams with most number of MVPs", "\n", mvps)
 print("\n")
 print("2. Top 3 teams with most number of NBA Championship", "\n",teams)
+ab = input("Press Enter To Continue")
 
 #MVP by position GROUP BY era (1970s, 1980s etc) 
 print("\n")
@@ -40,6 +42,7 @@ years = [y[10],y[20], y[30], y[40], y[50], y[61]]
 
 tposi = dffmm.groupby("Position")["Year"].count().nlargest(3).reset_index() #total number of position winning mvps
 print("1. Total MVP By Position","\n", tposi,"\n")
+ac = input("Press Enter To Continue")
 
 print("2. MVP by position each decade")
 import matplotlib.pyplot as plt
@@ -61,7 +64,8 @@ for year in years:
 d = pd.DataFrame({"Center": center, "Forward": forward, "Guard": guard}, index = years)
 a = d.plot.bar(rot=0)
 plt.show()
-    
+ad = input("Press Enter To Continue")
+
 print("\n")
 print("Trend Analysis")
 print("=======================")
@@ -94,6 +98,7 @@ print("2. Two Points Attempt Trend")
 import matplotlib.pyplot as plt
 plt.plot(years,twopdata)
 plt.show()
+ae = input("Press Enter To Continue")
 
 print("=================================================")
 # Advanced stats by position
@@ -109,7 +114,8 @@ import matplotlib.pyplot as plt
 winsharelist.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stacked=True)
 plt.show()
 print("=================================================")
-  
+af = input("Press Enter To Continue")
+
 print("\n")
 print("4. <Stat = Winshare : Top 10 players' position each year from 2005>")
 big = []
@@ -127,6 +133,7 @@ dff = pd.DataFrame({"C & PF": big, "PG & SG & SF": small}, index = years)
 axx = dff.plot.bar(rot=0)
 plt.show()
 print("=================================================")
+ag = input("Press Enter To Continue")
 
 vorplistt = ddhist.nlargest(50, "VORP")
 print("\n")
@@ -137,7 +144,7 @@ import matplotlib.pyplot as plt
 vorplistt.groupby(["Year", "Position"]).size().unstack().plot(kind='bar',stacked=True)
 plt.show()
 print("=================================================")
-
+ah = input("Press Enter To Continue")
 print("\n")
 print("6. <Stat = VORP : Top 10 players' position each year from 2005>")
 bigman = []
@@ -154,6 +161,7 @@ df = pd.DataFrame({"C & PF": bigman, "PG & SG & SF": smallman}, index = years)
 ax = df.plot.bar(rot=0)
 plt.show()
 
+ai = input("Press Enter To Continue")
 #Playoff Prediction
 print("\n")
 print("=================================================")
