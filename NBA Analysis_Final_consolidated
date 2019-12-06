@@ -105,6 +105,11 @@ print("=================================================")
 ddhist = dfhist[dfhist["Year"] >= 2005]  #to find recent trends
 years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
 
+#A Win Share is worth one-third of a team win. Win Shares are assigned to players based on their offense, defense, 
+#and playing time. 
+#If a team wins 60 games, there are 180 Win Shares to distribute among the players. This is always true; if a team wins n games, 
+#then there are 3n Win Shares to allocate to the players.
+
 winsharelist = ddhist.nlargest(50, "Winshare")
 print("\n")
 print("3. <Stat = Winshare : Top 50 players' position from 2005>")
@@ -134,6 +139,10 @@ axx = dff.plot.bar(rot=0)
 plt.show()
 print("=================================================")
 ag = input("Press Enter To Continue")
+
+#Value over Replacement Player (VORP): VORP is defined by Basketball Reference as a measure to estimate each player’s overall 
+#contribution to the team, measured vs. what a theoretical “replacement player” would provide, where the “replacement player” is 
+#defined as a player on minimum salary or not a normal member of a team’s rotation.
 
 vorplistt = ddhist.nlargest(50, "VORP")
 print("\n")
