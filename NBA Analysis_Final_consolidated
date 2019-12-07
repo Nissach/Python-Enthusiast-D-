@@ -105,8 +105,8 @@ print("=================================================")
 ddhist = dfhist[dfhist["Year"] >= 2005]  #to find recent trends
 years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
 
-#A Win Share is worth one-third of a team win. Win Shares are assigned to players based on their offense, defense, 
-#and playing time. 
+
+#A Win Share is worth one-third of a team win. Win Shares are assigned to players based on their offense, defense, and playing time. 
 #If a team wins 60 games, there are 180 Win Shares to distribute among the players. This is always true; if a team wins n games, 
 #then there are 3n Win Shares to allocate to the players.
 
@@ -139,6 +139,7 @@ axx = dff.plot.bar(rot=0)
 plt.show()
 print("=================================================")
 ag = input("Press Enter To Continue")
+
 
 #Value over Replacement Player (VORP): VORP is defined by Basketball Reference as a measure to estimate each player’s overall 
 #contribution to the team, measured vs. what a theoretical “replacement player” would provide, where the “replacement player” is 
@@ -176,6 +177,7 @@ print("\n")
 print("=================================================")
 print("<Playoff prediction>")
 
+import pandas as pd
 import matplotlib.pyplot as plt  # To visualize
 from sklearn.linear_model import LinearRegression
 
@@ -187,6 +189,10 @@ Win = df['W']
 
 # Check for linear relationship between Win and Points Difference
 plt.scatter(PTSdiff, Win, color='blue')
+plt.xlabel("Point Difference")
+plt.ylabel("Win")
+plt.show()
+input("Press Enter To Continue")
 
 # Add Point Difference to the data frame
 df['PTSdiff'] = PTSdiff  
@@ -199,21 +205,26 @@ linear_regressor = LinearRegression()  # create object for the class
 linear_regressor.fit(X, Y)  # perform linear regression
 Y_pred = linear_regressor.predict(X)  # make predictions
 
-plt.scatter(X, Y, color='black')
+plt.scatter(X, Y, color='blue')
 plt.plot(X, Y_pred, color='red')
+plt.xlabel("Point Difference")
+plt.ylabel("Win")
 plt.show()
 
-N = input("Press Enter To Continue")
+input("Press Enter To Continue")
 
-playoffdf = df[df.Playoffs == 1] # find how many wins you need to go to Playoffs
-playoffdf = playoffdf.groupby("W")["Playoffs"].count()
-print(playoffdf)
+tab = df.groupby(['W', 'Playoffs']).size()
+print(tab.to_string())
 
-playoffdf = df[df.Playoffs == 0] # find how many wins you need to go to Playoffs
-playoffdf = playoffdf.groupby("W")["Playoffs"].count()
-print(playoffdf)
+#playoffdf = df[df.Playoffs == 1] # find how many wins you need to go to Playoffs
+#playoffdf = playoffdf.groupby("W")["Playoffs"].count()
+#print(playoffdf)
 
-Y = input("Press Enter To Continue")
+#playoffdf = df[df.Playoffs == 0] # find how many wins you need to go to Playoffs
+#playoffdf = playoffdf.groupby("W")["Playoffs"].count()
+#print(playoffdf)
+
+input("Press Enter To Continue")
 
 df = df[["SeasonEnd", "Team", "Playoffs","W","PTS", "oppPTS", "FG", "2P" ,"3P", "2PA","3PA","FT","FTA","ORB","DRB","AST", "STL", "BLK", "TOV"]]
 df.columns = ["SeasonEnd", "Team", "Playoffs", "W","PTS","oppPTS","FG","X2P","X3P","X2PA","X3PA","FT","FTA","ORB","DRB","AST","STL","BLK","TOV"]
@@ -227,11 +238,16 @@ model = smf.ols(formula='Win ~ PTSdiff', data=df)
 res = model.fit()
 print(res.summary())
 print("")
-PD = (42-41)/0.0326
-print(PD)
-print("")
+
+input("Pres Enter to Continue")
+print("y_predict = 0.0326*x + 41")
+
+xM1 = input('Enter Ave. Point Differece:')
+yM1 = 0.0326*int(xM1) + 41
+print(yM1)
+input("Press Enter To Continue")
 
 print("Model 2 +++++++++++===========")
-model3 = smf.ols(formula='PTS ~ X2PA + X3PA + FTA + ORB + AST  +STL', data=df)
-res3 = model3.fit()
-print(res3.summary())
+model2 = smf.ols(formula='PTS ~ X2PA + X3PA + FTA + ORB + AST  +STL', data=df)
+res2 = model2.fit()
+print(res2.summary())
