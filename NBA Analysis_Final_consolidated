@@ -70,7 +70,7 @@ print("\n")
 print("Trend Analysis")
 print("=======================")
 
-ddhist = dfhist[dfhist["Year"] >= 1980] #only need year after 1980: three points rule created
+ddhist = dfhist[dfhist["Year"] >= 1980] #only need year after 1980: three points rule created & can be changed based on user preference
 
 years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
 threepdata = []
@@ -102,7 +102,7 @@ ae = input("Press Enter To Continue")
 
 print("=================================================")
 # Advanced stats by position
-ddhist = dfhist[dfhist["Year"] >= 2005]  #to find recent trends
+ddhist = dfhist[dfhist["Year"] >= 2005]  #to find recent trends and year can be changed to based on user preference
 years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
 
 
@@ -110,7 +110,7 @@ years = ddhist.groupby(["Year"]).count().reset_index()["Year"].tolist()
 #If a team wins 60 games, there are 180 Win Shares to distribute among the players. This is always true; if a team wins n games, 
 #then there are 3n Win Shares to allocate to the players.
 
-winsharelist = ddhist.nlargest(50, "Winshare")
+winsharelist = ddhist.nlargest(50, "Winshare") #the sabermetrics can be changed to any statistic user wants to know
 print("\n")
 print("3. <Stat = Winshare : Top 50 players' position from 2005>")
 print(winsharelist.groupby("Position")["Year"].count().sort_values(ascending = False),"\n")
